@@ -1,0 +1,18 @@
+<div class="card mb-3">
+    {% if session.get_session_image %}
+        <img src="{{ session.get_session_image }}" class="card-img-top" style="max-height: 200px; object-fit: cover;">
+    {% endif %}
+    <div class="card-body">
+        <h5 class="card-title">{{ session.get_session_title }}</h5>
+        <p>Начато: {{ session.start_time|date:"d.m.Y H:i" }}</p>
+        {% if session.end_time %}
+            <p>Завершено: {{ session.end_time|date:"d.m.Y H:i" }}</p>
+        {% else %}
+            <form method="post" action="{% url 'end_session_now' session.pk %}">
+                {% csrf_token %}
+                <button class="btn btn-danger">Завершить сейчас</button>
+            </form>
+        {% endif %}
+        <a href="{% url 'restsession_detail' session.pk %}" class="btn btn-outline-secondary mt-2">Подробнее</a>
+    </div>
+</div>

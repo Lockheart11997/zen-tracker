@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Детали сессии</h1>
+    <p><strong>Начало:</strong> {{ object.start_time }}</p>
+    <p><strong>Конец:</strong> {{ object.end_time|default:"в процессе" }}</p>
+    <p><strong>Длительность:</strong> {{ object.duration|default:"в процессе" }}</p>
+    {% if object.meditation %}
+        <p><strong>Медитация:</strong> {{ object.meditation.title }}</p>
+    {% endif %}
+    {% if object.breathing_exercise %}
+        <p><strong>Дыхательное упражнение:</strong> {{ object.breathing_exercise.title }}</p>
+    {% endif %}
+    <a href="{% url 'restsession_update' object.pk %}">Редактировать</a> |
+    <a href="{% url 'restsession_delete' object.pk %}">Удалить</a>
+{% endblock %}

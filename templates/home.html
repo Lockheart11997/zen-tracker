@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+  <h1 class="mb-4">Добро пожаловать, {{ user.username }}!</h1>
+
+  <div class="alert alert-info" role="alert">
+    🧘 За последнюю неделю вы отдыхали <strong>{{ weekly_minutes }}</strong> минут.
+  </div>
+
+  <div class="mb-4 d-flex gap-3 flex-wrap">
+    <a href="{% url 'select_exercise' %}" class="btn btn-success btn-lg">Начать новую сессию</a>
+    <a href="{% url 'restsession_list' %}" class="btn btn-outline-primary btn-lg">Мои сессии</a>
+  </div>
+
+  {% if active_sessions %}
+    <h3 class="mt-5">🟢 Активные сессии</h3>
+    <div class="list-group mb-4">
+      {% for session in active_sessions %}
+        <div class="list-group-item d-flex align-items-center">
+          {% if session.meditation %}
+            <img src="{{ session.meditation.image.url }}" alt="{{ session.meditation.title }}" width="80" class="me-3 rounded">
+            <div>
+              <h5>{{ session.meditation.title }}</h5>
+              <p class="mb-0 text-muted">Тип: Медитация</p>
+          {% elif session.breathing_exercise %}
+            <img src="{{ session.breathing_exercise.image.url }}" alt="{{ session.breathing_exercise.title }}" width="80" class="me-3 rounded">
+            <div>
+              <h5>{{ session.breathing_exercise.title }}</h5>
+              <p class="mb-0 text-muted">Тип: Дыхательное упражнение</p>
+          {% endif %}
+              <p class="mb-0">Начата: {{ session.start_time|date:"d M Y H:i" }}</p>
+              <form method="post" action="{% url 'end_session_now' session.pk %}" class="mt-2">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-sm btn-danger">Завершить</button>
+              </form>
+            </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <h3 class="mt-5">📜 Последние завершённые сессии</h3>
+  <div class="list-group">
+    {% for session in completed_sessions|slice:":5" %}
+      <div class="list-group-item d-flex align-items-center">
+        {% if session.meditation %}
+          <img src="{{ session.meditation.image.url }}" alt="{{ session.meditation.title }}" width="80" class="me-3 rounded">
+          <div>
+            <h5>{{ session.meditation.title }}</h5>
+            <p class="mb-0 text-muted">Тип: Медитация</p>
+        {% elif session.breathing_exercise %}
+          <img src="{{ session.breathing_exercise.image.url }}" alt="{{ session.breathing_exercise.title }}" width="80" class="me-3 rounded">
+          <div>
+            <h5>{{ session.breathing_exercise.title }}</h5>
+            <p class="mb-0 text-muted">Тип: Дыхательное упражнение</p>
+        {% endif %}
+            <p class="mb-0">Начало: {{ session.start_time|date:"d M Y H:i" }}</p>
+            <p class="mb-0">Завершено: {{ session.end_time|date:"d M Y H:i" }}</p>
+          </div>
+      </div>
+    {% empty %}
+      <p class="text-muted">Нет завершённых сессий.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

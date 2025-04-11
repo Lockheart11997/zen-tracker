@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+  <h1 class="text-center mb-5 display-5 fw-bold">Выбери упражнение</h1>
+
+  <div class="row g-4 justify-content-center">
+
+    <!-- Медитации -->
+    <div class="col-12 col-md-6">
+      <a href="{% url 'meditation_list' %}" class="text-decoration-none">
+        <div class="card h-100 shadow-lg border-0 rounded-4 hover-shadow transition">
+          <div class="row g-0 align-items-center">
+            <div class="col-4">
+              <img src="{% static 'images/meditation.jpg' %}" class="img-fluid rounded-start-4" alt="Медитации">
+            </div>
+            <div class="col-8">
+              <div class="card-body">
+                <h4 class="card-title fw-bold">🧘 Медитации</h4>
+                <p class="card-text text-muted">Разум отдыхает, тело расслабляется. Найди внутреннюю тишину.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Дыхательные упражнения -->
+    <div class="col-12 col-md-6">
+      <a href="{% url 'breathing_list' %}" class="text-decoration-none">
+        <div class="card h-100 shadow-lg border-0 rounded-4 hover-shadow transition">
+          <div class="row g-0 align-items-center">
+            <div class="col-4">
+              <img src="{% static 'images/breathing.jpg' %}" class="img-fluid rounded-start-4" alt="Дыхательные упражнения">
+            </div>
+            <div class="col-8">
+              <div class="card-body">
+                <h4 class="card-title fw-bold">🌬 Дыхательные упражнения</h4>
+                <p class="card-text text-muted">Замедлись. Вдохни. Выдохни. Перезагрузись за 5 минут.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

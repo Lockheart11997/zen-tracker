@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+    {% if exercise.image %}
+        <img src="{{ exercise.image.url }}" class="card-img-top" alt="{{ exercise.title }}">
+    {% endif %}
+    <div class="card-body">
+        <h2 class="card-title">{{ exercise.title }}</h2>
+        <p class="card-text">{{ exercise.description }}</p>
+        <p><strong>Инструкция:</strong> {{ exercise.instructions }}</p>
+        <p><strong>Время (мин):</strong> {{ exercise.duration }}</p>
+
+        <form method="post" action="{% url 'start_breathing_session' exercise.pk %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success">Начать упражнение</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

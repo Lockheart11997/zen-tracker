@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Редактировать сессию</h2>
+  <form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+      {{ form.start_time.label_tag }}
+      {{ form.start_time }}
+    </div>
+    <div class="mb-3">
+      {{ form.end_time.label_tag }}
+      {{ form.end_time }}
+    </div>
+    <button type="submit" class="btn btn-success">💾 Сохранить</button>
+    <a href="{% url 'restsession_list' %}" class="btn btn-secondary">Назад</a>
+  </form>
+</div>
+{% endblock %}

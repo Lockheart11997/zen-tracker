@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<h1 class="mb-4">Выбери медитацию</h1>
+<div class="row">
+    {% for meditation in meditations %}
+    <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card h-100">
+            {% if meditation.image %}
+                <img src="{{ meditation.image.url }}" class="card-img-top" alt="{{ meditation.title }}">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ meditation.title }}</h5>
+                <p class="card-text">{{ meditation.description|truncatewords:25 }}</p>
+                <a href="{% url 'meditation_detail' meditation.pk %}" class="btn btn-primary">Подробнее</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>Нет доступных медитаций.</p>
+    {% endfor %}
+</div>
+{% endblock %}

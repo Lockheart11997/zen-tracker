@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Удалить сессию?</h1>
+    <p>Вы уверены, что хотите удалить сессию от {{ object.start_time }}?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Удалить</button>
+    </form>
+{% endblock %}

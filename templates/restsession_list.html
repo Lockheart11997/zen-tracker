@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2 class="mb-4">📋 Мои сессии</h2>
+
+  {% if sessions %}
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+      {% for session in sessions %}
+        <div class="col">
+          <div class="card h-100">
+            {% if session.meditation %}
+              <img src="{{ session.meditation.image.url }}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="{{ session.meditation.title }}">
+            {% elif session.breathing_exercise %}
+              <img src="{{ session.breathing_exercise.image.url }}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="{{ session.breathing_exercise.title }}">
+            {% endif %}
+            <div class="card-body">
+              {% if session.meditation %}
+                <h5 class="card-title">🧘 {{ session.meditation.title }}</h5>
+                <p class="card-text text-muted">Тип: Медитация</p>
+              {% elif session.breathing_exercise %}
+                <h5 class="card-title">🌬 {{ session.breathing_exercise.title }}</h5>
+                <p class="card-text text-muted">Тип: Дыхательное упражнение</p>
+              {% endif %}
+              <p class="card-text mb-1">Начало: {{ session.start_time|date:"d M Y H:i" }}</p>
+              {% if session.end_time %}
+                <p class="card-text mb-2">Завершено: {{ session.end_time|date:"d M Y H:i" }}</p>
+              {% else %}
+                <span class="badge bg-warning text-dark">Активная</span>
+              {% endif %}
+            </div>
+            <div class="card-footer d-flex justify-content-between">
+              <a href="{% url 'restsession_update' session.pk %}" class="btn btn-sm btn-outline-primary">✏️ Изменить</a>
+              <a href="{% url 'restsession_delete' session.pk %}" class="btn btn-sm btn-outline-danger">🗑 Удалить</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>У вас ещё нет сохранённых сессий.</p>
+  {% endif %}
+</div>
+{% endblock %}

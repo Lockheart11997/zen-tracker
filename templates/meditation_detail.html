@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+    {% if meditation.image %}
+        <img src="{{ meditation.image.url }}" class="card-img-top" alt="{{ meditation.title }}">
+    {% endif %}
+    <div class="card-body">
+        <h2 class="card-title">{{ meditation.title }}</h2>
+        <p class="card-text">{{ meditation.description }}</p>
+        <p><strong>Инструкция:</strong> {{ meditation.instructions }}</p>
+        <p><strong>Время (мин):</strong> {{ meditation.duration }}</p>
+
+        <form method="post" action="{% url 'start_meditation_session' meditation.pk %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success">Начать медитацию</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

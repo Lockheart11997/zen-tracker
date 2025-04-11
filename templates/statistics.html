@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Статистика</h1>
+
+    <div class="mb-4">
+        <h3>Общая статистика</h3>
+        <p>Общее количество сессий: {{ total_sessions }}</p>
+        <p>Общее время: {{ total_time }} мин</p>
+    </div>
+
+    <div class="mb-4">
+        <h3>Количество сессий</h3>
+        <p>Медитаций: {{ meditation_count }}</p>
+        <p>Дыхательных упражнений: {{ breathing_count }}</p>
+    </div>
+
+    <div class="mb-4">
+        <h3>Время на каждое упражнение</h3>
+        <p>Медитации: {{ meditation_time }} мин</p>
+        <p>Дыхательные упражнения: {{ breathing_time }} мин</p>
+    </div>
+</div>
+{% endblock %}

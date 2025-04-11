@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="mb-4">Выбери дыхательное упражнение</h1>
+<div class="row">
+    {% for exercise in exercises %}
+    <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card h-100">
+            {% if exercise.image %}
+                <img src="{{ exercise.image.url }}" class="card-img-top" alt="{{ exercise.title }}">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ exercise.title }}</h5>
+                <p class="card-text">{{ exercise.description|truncatewords:25 }}</p>
+                <a href="{% url 'breathing_detail' exercise.pk %}" class="btn btn-primary">Подробнее</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>Нет дыхательных упражнений.</p>
+    {% endfor %}
+</div>
+{% endblock %}
