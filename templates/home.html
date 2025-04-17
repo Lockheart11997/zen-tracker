@@ -5,6 +5,15 @@
 <div class="container mt-4">
   <h1 class="mb-4">Добро пожаловать, {{ user.username }}!</h1>
 
+  {% if random_tip %}
+  <div class="alert alert-success" role="alert">
+    <div class="alert alert-success" role="alert">
+  <h5 class="mb-1">💡 {{ random_tip.title }}</h5>
+  <p class="mb-0">{{ random_tip.content }}</p>
+</div>
+  </div>
+{% endif %}
+
   <div class="alert alert-info" role="alert">
     🧘 За последнюю неделю вы отдыхали <strong>{{ weekly_minutes }}</strong> минут.
   </div>

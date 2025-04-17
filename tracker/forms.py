@@ -1,5 +1,7 @@
 from django import forms
 from .models import RestSession
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 class RestSessionForm(forms.ModelForm):
     class Meta:
@@ -18,5 +20,11 @@ class RestSessionForm(forms.ModelForm):
             'end_time': 'Завершение сессии',
         }
 
+class CustomUserCreationForm(UserCreationForm):
+    email = forms.EmailField(required=True, help_text="Обязательно введите ваш email")
+
+    class Meta:
+        model = User
+        fields = ("username", "email", "password1", "password2")
 
 

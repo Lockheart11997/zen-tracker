@@ -1,15 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.decorators.http import require_POST
-from .models import RestSession, Meditation, BreathingExercise
+from .models import RestSession, Meditation, BreathingExercise, RelaxationTip
 from .forms import RestSessionForm
-from django.contrib.auth.forms import UserCreationForm
+from .forms import CustomUserCreationForm
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.db.models import F, Sum
 from django.utils import timezone
 from datetime import timedelta
+import random
 
 class RestSessionListView(LoginRequiredMixin, ListView):
     model = RestSession
@@ -68,12 +69,12 @@ class RestSessionDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
 
 def register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('login')
     else:
-        form = UserCreationForm()
+        form = CustomUserCreationForm()
     return render(request, 'registration/register.html', {'form': form})
 
 class MeditationListView(LoginRequiredMixin, ListView):
@@ -147,7 +148,12 @@ def breathing_detail(request, pk):
     exercise = get_object_or_404(BreathingExercise, pk=pk)
     return render(request, 'breathing_detail.html', {'exercise': exercise})
 
+@login_required
 def home_view(request):
+    # Получение всех подсказок
+    tips = RelaxationTip.objects.all()
+    random_tip = random.choice(tips) if tips else None
+
     now = timezone.now()
     one_week_ago = now - timedelta(days=7)
 
@@ -172,6 +178,7 @@ def home_view(request):
         'active_sessions': active_sessions,
         'completed_sessions': completed_sessions,
         'weekly_minutes': round(total_minutes),
+        'random_tip': random_tip
     })
 
 def select_exercise(request):
