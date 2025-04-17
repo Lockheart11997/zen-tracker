@@ -137,7 +137,8 @@ AWS_ACCESS_KEY_ID = 'AKIAU7BGABLUFGV6TR4E'
 AWS_SECRET_ACCESS_KEY = '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'
 AWS_STORAGE_BUCKET_NAME = 'zen-tracker-media'
 AWS_S3_REGION_NAME = 'eu-north-1'
-AWS_QUERYSTRING_AUTH = False  # чтобы URL не был временным
+AWS_S3_ADDRESSING_STYLE = "virtual"  # иногда помогает с URL
+AWS_S3_SIGNATURE_VERSION = 's3v4'
+AWS_DEFAULT_ACL = None  # важно!
 
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-MEDIA_URL = f'https://zen-tracker-media.s3.amazonaws.com/'
+MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/'
