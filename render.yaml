@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: zen-tracker
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn antiproductivity.wsgi:application
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: antiproductivity.settings
+      - key: SECRET_KEY
+        generateValue: true
