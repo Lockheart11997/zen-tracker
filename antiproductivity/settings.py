@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tracker',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -115,8 +116,8 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = '/media/'  # URL, по которому будут доступны медиафайлы
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Папка для хранения медиафайлов
 
 # поскольку имейла не существует, просто скопированы стандартные
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -128,3 +129,15 @@ EMAIL_HOST_PASSWORD = 'your_password'
 DEFAULT_FROM_EMAIL = 'zen-tracker@example.com'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Хранение медиафайлов на S3
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+AWS_ACCESS_KEY_ID = 'AKIAU7BGABLUFGV6TR4E'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'zen-tracker-media'
+AWS_S3_REGION_NAME = 'eu-north-1'
+AWS_QUERYSTRING_AUTH = False  # чтобы URL не был временным
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+MEDIA_URL = f'https://zen-tracker-media.s3.amazonaws.com/'
