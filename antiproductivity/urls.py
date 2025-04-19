@@ -4,6 +4,7 @@ from tracker import views as tracker_views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
+from tracker.views import activate_account
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -13,6 +14,7 @@ urlpatterns = [
     path('', include('tracker.urls')),
     path('sessions/', tracker_views.RestSessionListView.as_view(), name='restsession_list'),
 
+    path('activate/<uidb64>/<token>/', activate_account, name='activate_account'),
     path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),

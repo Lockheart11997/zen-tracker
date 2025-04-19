@@ -127,7 +127,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'lockheart11997@gmail.com'
 EMAIL_HOST_PASSWORD = 'woee sukf cixl woof'
-DEFAULT_FROM_EMAIL = 'lockheart11997@gmail.com'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # Хранение медиафайлов на S3
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'

@@ -6,10 +6,19 @@ from .forms import RestSessionForm
 from .forms import CustomUserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse_lazy
+from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.models import User
+from django.urls import reverse_lazy, reverse
 from django.db.models import F, Sum
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from .utils import send_activation_email
 from django.utils import timezone
 from datetime import timedelta
+from django.conf import settings
 import random
 
 class RestSessionListView(LoginRequiredMixin, ListView):
@@ -71,11 +80,29 @@ def register(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('login')
+            user = form.save(commit=False)
+            user.is_active = False  # аккаунт неактивен до подтверждения
+            user.save()
+
+            send_activation_email(user, request)
+            return render(request, 'registration/activation_sent.html')
     else:
         form = CustomUserCreationForm()
     return render(request, 'registration/register.html', {'form': form})
+
+def activate_account(request, uidb64, token):
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = User.objects.get(pk=uid)
+    except (User.DoesNotExist, ValueError, TypeError, OverflowError):
+        user = None
+
+    if user and default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        return render(request, 'registration/activation_success.html')
+    else:
+        return render(request, 'registration/activation_invalid.html')
 
 class MeditationListView(LoginRequiredMixin, ListView):
     model = Meditation
