@@ -48,7 +48,7 @@ class RestSessionUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView)
     success_url = reverse_lazy('restsession_list')
 
     def form_valid(self, form):
-        if 'finish_now' in self.request.POST:
+        if 'finish_now' in self.request.POST and not form.instance.end_time:
             form.instance.end_time = timezone.now()
         return super().form_valid(form)
 
@@ -85,11 +85,12 @@ class MeditationListView(LoginRequiredMixin, ListView):
 class MeditationDetailView(LoginRequiredMixin, DetailView):
     model = Meditation
     template_name = 'meditation_detail.html'
+    context_object_name = 'meditation'
 
     def post(self, request, *args, **kwargs):
         meditation = self.get_object()
         session_id = request.POST.get('session_id')
-        session = RestSession.objects.get(pk=session_id, user=request.user)
+        session = get_object_or_404(RestSession, pk=session_id, user=request.user)
         session.meditation = meditation
         session.save()
         return redirect('restsession_detail', pk=session.pk)
@@ -98,16 +99,17 @@ class MeditationDetailView(LoginRequiredMixin, DetailView):
 class BreathingListView(LoginRequiredMixin, ListView):
     model = BreathingExercise
     template_name = 'breathing_list.html'
-    context_object_name = 'breathing'
+    context_object_name = 'exercises'
 
 class BreathingDetailView(LoginRequiredMixin, DetailView):
     model = BreathingExercise
     template_name = 'breathing_detail.html'
+    context_object_name = 'exercise'
 
     def post(self, request, *args, **kwargs):
         exercise = self.get_object()
         session_id = request.POST.get('session_id')
-        session = RestSession.objects.get(pk=session_id, user=request.user)
+        session = get_object_or_404(RestSession, pk=session_id, user=request.user)
         session.breathing_exercise = exercise
         session.save()
         return redirect('restsession_detail', pk=session.pk)
@@ -132,22 +134,6 @@ def create_rest_session(request):
 
     return render(request, 'restsession_form.html', {'form': form})
 
-def meditation_list(request):
-    meditations = Meditation.objects.all()
-    return render(request, 'meditation_list.html', {'meditations': meditations})
-
-def meditation_detail(request, pk):
-    meditation = get_object_or_404(Meditation, pk=pk)
-    return render(request, 'meditation_detail.html', {'meditation': meditation})
-
-def breathing_list(request):
-    exercises = BreathingExercise.objects.all()
-    return render(request, 'breathing_list.html', {'exercises': exercises})
-
-def breathing_detail(request, pk):
-    exercise = get_object_or_404(BreathingExercise, pk=pk)
-    return render(request, 'breathing_detail.html', {'exercise': exercise})
-
 @login_required
 def home_view(request):
     # Получение всех подсказок
@@ -157,21 +143,20 @@ def home_view(request):
     now = timezone.now()
     one_week_ago = now - timedelta(days=7)
 
-    if request.user.is_authenticated:
-        sessions = RestSession.objects.filter(user=request.user)
-        active_sessions = sessions.filter(end_time__isnull=True).order_by('-start_time')
-        completed_sessions = sessions.filter(end_time__isnull=False).order_by('-end_time')
+    sessions = RestSession.objects.filter(user=request.user)
+    active_sessions = sessions.filter(end_time__isnull=True).order_by('-start_time')
+    completed_sessions = sessions.filter(end_time__isnull=False).order_by('-end_time')
 
-        total_minutes = sessions.filter(
-            end_time__isnull=False,
-            start_time__gte=one_week_ago
-        ).aggregate(
-            total=Sum(F('end_time') - F('start_time'))
-        )['total']
+    total_minutes = sessions.filter(
+        end_time__isnull=False,
+        start_time__gte=one_week_ago
+    ).aggregate(
+        total=Sum(F('end_time') - F('start_time'))
+    )['total']
 
-        total_minutes = total_minutes.total_seconds() / 60 if total_minutes else 0
+    if total_minutes:
+        total_minutes = total_minutes.total_seconds() / 60
     else:
-        active_sessions = completed_sessions = []
         total_minutes = 0
 
     return render(request, 'home.html', {
