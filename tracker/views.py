@@ -20,7 +20,8 @@ from django.utils import timezone
 from datetime import timedelta
 from django.conf import settings
 import random
-
+from django.core.files.storage import default_storage
+print(default_storage.__class__)
 class RestSessionListView(LoginRequiredMixin, ListView):
     model = RestSession
     template_name = 'restsession_list.html'

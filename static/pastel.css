@@ -72,6 +72,13 @@ img {
   border-radius: 8px;
 }
 
+.pastel-img {
+  object-fit: cover;
+  max-height: 500px;
+  width: 100%;
+  border-radius: 12px;
+}
+
 /* Ссылки */
 a {
   color: #397d5d;
@@ -88,4 +95,29 @@ a:hover {
 
 .navbar-brand, .nav-link {
   color: #2e4e36 !important;
+}
+
+.pastel-footer {
+    background-color: #c3e6d1 !important;
+    color: #2e4e36;
+    padding: 1rem 0;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+}
+
+.pastel-footer a {
+    color: #2e4e36;
+    margin: 0 0.5rem;
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+}
+
+.pastel-footer a:hover {
+    color: #519d7b;
+}
+
+.pastel-footer .container {
+  background-color: #c3e6d1 !important; /* тот самый зелёный, как у навбара */
+  border: none !important;
+  box-shadow: none !important;
 }

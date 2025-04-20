@@ -1,10 +1,18 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="card">
-    {% if meditation.image %}
-        <img src="{{ meditation.image.url }}" class="card-img-top" alt="{{ meditation.title }}">
-    {% endif %}
-    <div class="card-body">
+<div class="container-fluid">
+  <div class="row g-4 align-items-center">
+
+    <!-- Картинка -->
+    <div class="col-12 col-lg-6">
+      {% if meditation.image %}
+        <img src="{{ meditation.image.url }}" alt="{{ meditation.title }}" class="img-fluid w-100 rounded pastel-img">
+      {% endif %}
+    </div>
+
+    <!-- Текст и кнопка -->
+    <div class="col-12 col-lg-6">
+      <div class="card-body">
         <h2 class="card-title">{{ meditation.title }}</h2>
         <p class="card-text">{{ meditation.description }}</p>
         <p><strong>Инструкция:</strong> {{ meditation.instructions }}</p>
@@ -14,6 +22,9 @@
             {% csrf_token %}
             <button type="submit" class="btn btn-success">Начать медитацию</button>
         </form>
+      </div>
     </div>
+
+  </div>
 </div>
 {% endblock %}

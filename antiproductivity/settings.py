@@ -30,6 +30,20 @@ INSTALLED_APPS = [
     'storages',  # для статичных изображений
 ]
 
+# Хранение медиафайлов на S3
+AWS_ACCESS_KEY_ID = 'AKIAU7BGABLUFGV6TR4E'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'zen-tracker-media'
+AWS_S3_REGION_NAME = 'eu-north-1'
+AWS_S3_ADDRESSING_STYLE = "virtual"  # иногда помогает с URL
+AWS_S3_SIGNATURE_VERSION = 's3v4'
+AWS_DEFAULT_ACL = None  # важно!
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/'
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',   # для статистики
@@ -117,7 +131,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_URL = '/media/'  # URL, по которому будут доступны медиафайлы
+# MEDIA_URL = '/media/'  # URL, по которому будут доступны медиафайлы
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Папка для хранения медиафайлов
 
 # просто личный имейл, лучше сделать env
@@ -129,15 +143,4 @@ EMAIL_HOST_USER = 'lockheart11997@gmail.com'
 EMAIL_HOST_PASSWORD = 'woee sukf cixl woof'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-# Хранение медиафайлов на S3
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
-AWS_ACCESS_KEY_ID = 'AKIAU7BGABLUFGV6TR4E'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'zen-tracker-media'
-AWS_S3_REGION_NAME = 'eu-north-1'
-AWS_S3_ADDRESSING_STYLE = "virtual"  # иногда помогает с URL
-AWS_S3_SIGNATURE_VERSION = 's3v4'
-AWS_DEFAULT_ACL = None  # важно!
-
-MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/'

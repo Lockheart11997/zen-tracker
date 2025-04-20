@@ -1,5 +1,10 @@
 {% load static %}
+{% load tz %}
+{% now "Y" as now_year %}
 <html lang="ru">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Дзен-трекер{% endblock %}</title>
@@ -7,6 +12,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'pastel.css' %}">
 </head>
+
+
+
 <body>
     {% include 'partials/navbar.html' %}
     <div class="container">
@@ -15,4 +23,23 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
+<footer class="bg-gray text-center text-muted py-4 mt-5 border-top pastel-footer">
+  <div class="container">
+    <p class="mb-2 small">© {{ now_year }} Познай Дзен — отдыхай с умом 🧘 Все права защищены.</p>
+
+    <div class="mb-3">
+      <a href="#" class="text-muted me-3 fs-5"><i class="bi bi-instagram"></i></a>
+      <a href="#" class="text-muted me-3 fs-5"><i class="bi bi-facebook"></i></a>
+      <a href="#" class="text-muted me-3 fs-5"><i class="bi bi-twitter"></i></a>
+      <a href="#" class="text-muted fs-5"><i class="bi bi-envelope"></i></a>
+    </div>
+
+    <div class="small">
+      <a href="#" class="text-muted me-3">Политика конфиденциальности</a>
+      <a href="#" class="text-muted me-3">Обратная связь</a>
+      <a href="{% url 'home' %}" class="text-muted">На главную</a>
+    </div>
+  </div>
+</footer>
 </html>

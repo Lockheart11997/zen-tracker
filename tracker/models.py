@@ -59,7 +59,7 @@ class Meditation(models.Model):
     description = models.TextField()
     image = models.ImageField(upload_to='meditation_images/', null=True, blank=True)
     instructions = models.TextField(blank=True, null=True)
-    duration = models.PositiveIntegerField(help_text="Длительность в минутах")
+    duration = models.PositiveIntegerField(help_text="Длительность в минутах", default=5)
 
 
     def __str__(self):
@@ -75,7 +75,7 @@ class BreathingExercise(models.Model):
     description = models.TextField()
     image = models.ImageField(upload_to='meditation_images/', null=True, blank=True)
     instructions = models.TextField(blank=True, null=True)
-    duration = models.PositiveIntegerField(help_text="Длительность в минутах")
+    duration = models.PositiveIntegerField(help_text="Длительность в минутах", default=5)
 
     def __str__(self):
         return self.title
