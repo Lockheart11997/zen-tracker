@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils.timezone import now
+from datetime import date
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 class RestSession(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -105,3 +108,25 @@ class Statistics(models.Model):
     total_meditation_time = models.DurationField(default=0)
     total_breathing_time = models.DurationField(default=0)
 
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    birth_date = models.DateField(null=True, blank=True, verbose_name="Дата рождения")
+    bio = models.TextField(blank=True, verbose_name="О себе")
+    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True, verbose_name="Аватар")
+
+    @property
+    def age(self):
+        if self.birth_date:
+            today = date.today()
+            return today.year - self.birth_date.year - ((today.month, today.day) < (self.birth_date.month, self.birth_date.day))
+        return None
+
+    def __str__(self):
+        return f"Профиль {self.user.username}"
+
+@receiver(post_save, sender=User)
+def create_or_update_user_profile(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
+    else:
+        instance.userprofile.save()

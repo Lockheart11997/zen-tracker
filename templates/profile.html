@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4"> Профиль пользователя</h2>
+
+  <form method="post" enctype="multipart/form-data" class="row g-4">
+    {% csrf_token %}
+
+    <div class="col-md-6">
+      <label for="id_first_name" class="form-label">Имя</label>
+      <input type="text" name="first_name" class="form-control" value="{{ user.first_name }}">
+    </div>
+
+    <div class="col-md-6">
+      <label for="id_email" class="form-label">Email</label>
+      <input type="email" name="email" class="form-control" value="{{ user.email }}">
+    </div>
+
+    <div class="col-md-6">
+      <label for="id_birth_date" class="form-label">Дата рождения</label>
+      {{ user_form.birth_date }}
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label">Возраст</label>
+      <input type="text" class="form-control" value="{{ age }} лет" disabled>
+    </div>
+
+    <div class="col-12">
+      <label for="id_bio" class="form-label">О себе</label>
+      {{ user_form.bio }}
+    </div>
+
+    <div class="col-md-6">
+      <label for="id_avatar" class="form-label">Аватар</label>
+      {{ user_form.avatar }}
+    </div>
+
+
+    <div class="col-md-6">
+      <label class="form-label d-block">Текущий аватар:</label>
+      {% if user.userprofile.avatar %}
+        <img src="{{ user.userprofile.avatar.url }}" class="img-thumbnail" width="150">
+      {% else %}
+        <img src="{% static 'images/default-avatar.png' %}" class="img-thumbnail" width="150">
+      {% endif %}
+    </div>
+
+    <div class="col-12">
+      <button type="submit" class="btn btn-success">💾 Сохранить изменения</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

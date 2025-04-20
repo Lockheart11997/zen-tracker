@@ -5,6 +5,7 @@ urlpatterns = [
     path('', views.home_view, name='home'),
     path('select/', views.select_exercise, name='select_exercise'),
     path('statistics/', views.statistics_view, name='statistics'),
+    path('profile/', views.profile_view, name='profile'),
 
     path('session/<int:pk>/', views.RestSessionDetailView.as_view(), name='restsession_detail'),
     path('session/new/', views.RestSessionCreateView.as_view(), name='restsession_create'),

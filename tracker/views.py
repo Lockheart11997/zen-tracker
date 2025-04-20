@@ -1,27 +1,21 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views.decorators.http import require_POST
-from .models import RestSession, Meditation, BreathingExercise, RelaxationTip
-from .forms import RestSessionForm
-from .forms import CustomUserCreationForm
+from .models import RestSession, Meditation, BreathingExercise, RelaxationTip, UserProfile
+from .forms import RestSessionForm, CustomUserCreationForm, UserProfileForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
-from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.models import User
-from django.urls import reverse_lazy, reverse
+from django.contrib import messages
+from django.urls import reverse_lazy
 from django.db.models import F, Sum
-from django.core.mail import send_mail
-from django.template.loader import render_to_string
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes, force_str
+from django.utils.http import urlsafe_base64_decode
 from .utils import send_activation_email
 from django.utils import timezone
 from datetime import timedelta
-from django.conf import settings
 import random
-from django.core.files.storage import default_storage
-print(default_storage.__class__)
+
 class RestSessionListView(LoginRequiredMixin, ListView):
     model = RestSession
     template_name = 'restsession_list.html'
@@ -263,3 +257,26 @@ def statistics_view(request):
     }
 
     return render(request, 'statistics.html', context)
+
+@login_required
+def profile_view(request):
+    profile = request.user.userprofile
+
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            request.user.first_name = request.POST.get('first_name', '')
+            request.user.email = request.POST.get('email', '')
+            request.user.save()
+            form.save()
+            messages.success(request, 'Профиль обновлён.')
+            return redirect('profile')
+    else:
+        form = UserProfileForm(instance=profile)
+
+    return render(request, 'profile.html', {
+        'user_form': form,
+        'user': request.user,
+        'age': profile.age
+    })
+

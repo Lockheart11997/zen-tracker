@@ -1,5 +1,5 @@
 from django import forms
-from .models import RestSession
+from .models import RestSession, UserProfile
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
@@ -33,5 +33,12 @@ class CustomUserCreationForm(UserCreationForm):
                 raise forms.ValidationError("Пользователь с таким email уже существует.")
             return email
 
-
-
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['birth_date', 'bio', 'avatar']
+        widgets = {
+            'birth_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control','placeholder': 'дд.мм.гггг'}),
+            'bio': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'avatar': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+        }

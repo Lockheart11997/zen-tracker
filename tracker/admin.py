@@ -1,9 +1,11 @@
 from django.contrib import admin
 from .models import *
+from .models import UserProfile
 
 admin.site.register(RestSession)
 admin.site.register(RelaxationTip)
 admin.site.register(Statistics)
+admin.site.register(UserProfile)
 
 @admin.register(Meditation)
 class MeditationAdmin(admin.ModelAdmin):
