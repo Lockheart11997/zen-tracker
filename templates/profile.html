@@ -38,7 +38,6 @@
       {{ user_form.avatar }}
     </div>
 
-
     <div class="col-md-6">
       <label class="form-label d-block">Текущий аватар:</label>
       {% if user.userprofile.avatar %}
@@ -48,6 +47,9 @@
       {% endif %}
     </div>
 
+    <a href="{% url 'password_change' %}" class="btn btn-outline-primary mt-3">
+      🔐 Сменить пароль
+    </a>
     <div class="col-12">
       <button type="submit" class="btn btn-success">💾 Сохранить изменения</button>
     </div>
