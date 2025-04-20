@@ -121,3 +121,13 @@ a:hover {
   border: none !important;
   box-shadow: none !important;
 }
+
+.card {
+  text-align: center;
+}
+
+.card-img-top {
+  max-width: 80%;
+  height: auto;
+  margin: 0 auto;
+}

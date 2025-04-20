@@ -4,7 +4,7 @@
 <h1 class="mb-4">Выбери медитацию</h1>
 <div class="row">
     {% for meditation in meditations %}
-    <div class="col-md-6 col-lg-4 mb-4">
+    <div class="col-md-6 col-lg-4 mb-4 justify-content-center">
         <div class="card h-100">
             {% if meditation.image %}
                 <img src="{{ meditation.image.url }}" class="card-img-top" alt="{{ meditation.title }}">

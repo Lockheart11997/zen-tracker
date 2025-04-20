@@ -1,6 +1,7 @@
 from pathlib import Path # пути
 import os # файловая система
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -12,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-2-osx))c!9^iamef0m5yy3)pyx0#rahcv@j&^07@1e!tf-^dxq'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['.onrender.com', '127.0.0.1', 'localhost']
 
@@ -29,7 +30,7 @@ INSTALLED_APPS = [
     'tracker',
     'storages',  # для статичных изображений
 ]
-
+'''
 # Хранение медиафайлов на S3
 AWS_ACCESS_KEY_ID = 'AKIAU7BGABLUFGV6TR4E'
 AWS_SECRET_ACCESS_KEY = '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'
@@ -42,7 +43,7 @@ AWS_DEFAULT_ACL = None  # важно!
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/'
-
+'''
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -131,8 +132,8 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# MEDIA_URL = '/media/'  # URL, по которому будут доступны медиафайлы
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Папка для хранения медиафайлов
+MEDIA_URL = '/media/'  # URL, по которому будут доступны медиафайлы
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Папка для хранения медиафайлов
 
 # просто личный имейл, лучше сделать env
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -142,5 +143,3 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'lockheart11997@gmail.com'
 EMAIL_HOST_PASSWORD = 'woee sukf cixl woof'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-
-
